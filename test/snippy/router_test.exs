@@ -105,5 +105,6 @@ defmodule Snippy.RouterTest do
     assert conn.state == :sent
     assert conn.status == 200
     assert String.match?(conn.resp_body, ~r/Edit Your Snippet/)
+    assert String.match?(conn.resp_body, ~r/#{snippet.text}/)
   end
 end

@@ -8,7 +8,9 @@
       <div>
         <label for="snippet">Edit Your Snippet</label>
         <br>
-        <textarea name="snippet" id="snippet"></textarea>
+        <textarea name="snippet" id="snippet">
+          <%= snippet.text %>
+        </textarea>
       </div>
       <button type="submit">Submit</button>
     </form>
