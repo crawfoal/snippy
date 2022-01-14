@@ -31,3 +31,27 @@ PragProg.
 - Another thing that is bugging me is the duplication in parameter parsing. To
   address this, I'd review what Johnny did for this in recent work, as well as
   any other community patterns.
+- I'd also refactor `Store` to have the server helper functions broken out. This
+  would reduce some duplication and make coming updates easier.
+- I'm not sure I like the interface that `Snippets` has. I'd reconsider that
+  after implenting the versioning aspect of the problem because I'd have more
+  information at that point about what a better interface might look like.
+- I'm currently just at the beginning of implenting support for multiple
+  versions. I've started by adding a created at timestamp to the `Snippet`
+  struct. The plan is to the store an array of `Snippets`, adding new versions
+  to the top of the list. I chose to store the `created_at` timestamp in unix
+  format because I had a feeling I might want to use it sort of like an id
+  and/or for comparision of versions, but I'm not sure exactly how that will
+  play out.
+- A few beginning thoughts on handling concurrent updates:
+  - Simplest solution I can think of would be to implementing a high level
+    locking approach. The lock could be obtained when the edit endpoint is
+    handled and released after the update comes in. But then we'd probably want
+    some sort of expiration on that because someone could end up not actually
+    submitting an update (e.g. they walk away and forget).
+  - Maybe even simpler, and better, would be to just reject updates that weren't
+    based on the most recent version. Still pretty naive, but then you don't
+    have to handle locking and unlocking, which could get pretty messy.
+  - More complex, but more user friendly, would be to lock individual rows. And
+    show live updates! That would be cool, but also help the users be more
+    likely to be editing the most up-to-date version.
