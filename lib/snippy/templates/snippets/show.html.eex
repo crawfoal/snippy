@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Snippy</title>
+  </head>
+  <body>
+    <div>
+      Your snippet:
+      <br>
+      <%= snippet %>
+    </div>
+  </body>
+</html>

@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Shorty</title>
+    <title>Snippy</title>
   </head>
   <body>
-    <div>
-      <label for="snippet">Create A Snippet</label>
-      <br>
-      <textarea name="snippet" id="snippet"></textarea>
-    </div>
+    <form action="/snippets" method="POST" accept-charset="utf-8">
+      <div>
+        <label for="snippet">Create A Snippet</label>
+        <br>
+        <textarea name="snippet" id="snippet"></textarea>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
   </body>
 </html>
