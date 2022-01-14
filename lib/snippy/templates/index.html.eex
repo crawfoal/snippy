@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shorty</title>
+  </head>
+  <body>
+    <div>
+      <label for="snippet">Create A Snippet</label>
+      <br>
+      <textarea name="snippet" id="snippet"></textarea>
+    </div>
+  </body>
+</html>

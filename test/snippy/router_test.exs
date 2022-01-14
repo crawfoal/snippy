@@ -15,4 +15,14 @@ defmodule Snippy.RouterTest do
     assert conn.status == 404
     assert conn.resp_body == "not found"
   end
+
+  test "root route presents template" do
+    conn = conn(:get, "/")
+
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert String.match?(conn.resp_body, ~r/Create A Snippet/)
+  end
 end
