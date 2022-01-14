@@ -28,3 +28,6 @@ PragProg.
   to just use `POST` on my form...
 - This implementation currently doesn't handle concurrent updates (there's a
   race condition).
+- Another thing that is bugging me is the duplication in parameter parsing. To
+  address this, I'd review what Johnny did for this in recent work, as well as
+  any other community patterns.
