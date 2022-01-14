@@ -1,6 +1,7 @@
 defmodule Snippy.RouterTest do
   use ExUnit.Case, async: true
   use Plug.Test
+  import PhoenixPlugTestPatch
 
   alias Snippy.Router
 
@@ -26,7 +27,7 @@ defmodule Snippy.RouterTest do
     assert String.match?(conn.resp_body, ~r/Create A Snippet/)
   end
 
-  test "POST /snippets accepts form encoded data and responds w/ snippet" do
+  test "POST /snippets accepts form encoded data and redirects to snippet" do
     conn =
       conn(:post, "/snippets", "snippet=This+is+a+fun+exercise%21")
       |> put_req_header("content-type", "application/x-www-form-urlencoded")
@@ -34,8 +35,14 @@ defmodule Snippy.RouterTest do
 
     conn = Router.call(conn, @opts)
 
+    redirect_path = redirected_to(conn)
+    assert String.match?(redirect_path, ~r/\/snippets\/\d+/)
+
+    conn = conn(:get, redirect_path)
+    conn = Router.call(conn, @opts)
+
     assert conn.state == :sent
-    assert conn.status == 201
+    assert conn.status == 200
     assert String.match?(conn.resp_body, ~r/This is a fun exercise!/)
   end
 
@@ -47,8 +54,14 @@ defmodule Snippy.RouterTest do
 
     conn = Router.call(conn, @opts)
 
+    redirect_path = redirected_to(conn)
+    assert String.match?(redirect_path, ~r/\/snippets\/\d+/)
+
+    conn = conn(:get, redirect_path)
+    conn = Router.call(conn, @opts)
+
     assert conn.state == :sent
-    assert conn.status == 201
+    assert conn.status == 200
     refute String.match?(conn.resp_body, ~r/\<SCRIPT/)
     refute String.match?(conn.resp_body, ~r/\<\/SCRIPT\>/)
   end

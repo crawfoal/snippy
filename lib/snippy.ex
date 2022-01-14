@@ -3,16 +3,7 @@ defmodule Snippy do
   Documentation for `Snippy`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Snippy.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def host() do
+    "localhost:4001"
   end
 end

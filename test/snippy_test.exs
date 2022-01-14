@@ -2,7 +2,7 @@ defmodule SnippyTest do
   use ExUnit.Case
   doctest Snippy
 
-  test "greets the world" do
-    assert Snippy.hello() == :world
+  test "host/0" do
+    assert Snippy.host() == "localhost:4001"
   end
 end

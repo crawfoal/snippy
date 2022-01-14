@@ -7,7 +7,12 @@
     <div>
       Your snippet:
       <br>
-      <%= snippet %>
+      <%= snippet.text %>
+      <br>
+      <br>
+      This snippet can be accessed at:
+      <br>
+      <%= "#{Snippy.host()}/snippets/#{snippet.id}" %>
     </div>
   </body>
 </html>
