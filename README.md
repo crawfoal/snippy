@@ -1,21 +1,11 @@
 # Snippy
 
-**TODO: Add description**
+This is my solution to our team's 01/14/2022 learning challenge! The challenge
+is based on Exercise 54 in Brian P. Hagan's "Exercises for Programmers" book by
+PragProg.
 
-## Installation
+## Development & Testing
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `snippy` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:snippy, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/snippy](https://hexdocs.pm/snippy).
-
+- Run the application with `mix run --no-halt`, or within an iex session
+  `iex -S mix`. You can visit the application at http://localhost:4000/.
+- Run tests via `mix test`.
