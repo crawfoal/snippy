@@ -5,7 +5,7 @@ defmodule Snippy.Router do
   plug Plug.Parsers, parsers: [:urlencoded], pass: ["text/*"]
   plug :dispatch
 
-  alias Snippy.Snippets
+  alias Snippy.{ Snippet, Snippets }
 
   @template_dir "lib/snippy/templates"
 
@@ -14,11 +14,13 @@ defmodule Snippy.Router do
   end
 
   get "/snippets/:id" do
-    case Integer.parse(id) do
-      {id, _rest} ->
-        snippet = Snippets.by_id(id)
-        render(conn, "snippets/show.html.eex", [snippet: snippet])
-      _error ->
+    with(
+      {id, _rest} <- Integer.parse(id),
+      %Snippet{} = snippet <- Snippets.by_id(id)
+    ) do
+      render(conn, "snippets/show.html.eex", [snippet: snippet])
+    else
+      _error_or_nil ->
         send_resp(conn, 404, "not found")
     end
   end

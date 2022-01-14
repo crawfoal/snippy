@@ -65,4 +65,13 @@ defmodule Snippy.RouterTest do
     refute String.match?(conn.resp_body, ~r/\<SCRIPT/)
     refute String.match?(conn.resp_body, ~r/\<\/SCRIPT\>/)
   end
+
+  test "GET /snippets/:id returns 404 if the snippet doesn't exist" do
+    conn = conn(:get, "/snippets/923839438")
+
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 404
+  end
 end
