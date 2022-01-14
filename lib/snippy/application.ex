@@ -8,7 +8,8 @@ defmodule Snippy.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Snippy.Router, options: [port: 4001]}
+      {Plug.Cowboy, scheme: :http, plug: Snippy.Router, options: [port: 4001]},
+      Snippy.Store
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

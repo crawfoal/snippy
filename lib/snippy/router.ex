@@ -14,15 +14,20 @@ defmodule Snippy.Router do
   end
 
   get "/snippets/:id" do
-    snippet = Snippets.by_id(id)
-
-    render(conn, "snippets/show.html.eex", [snippet: snippet])
+    case Integer.parse(id) do
+      {id, _rest} ->
+        snippet = Snippets.by_id(id)
+        render(conn, "snippets/show.html.eex", [snippet: snippet])
+      _error ->
+        send_resp(conn, 404, "not found")
+    end
   end
 
   post "/snippets" do
     snippet_text = conn.body_params["snippet"] |> Plug.HTML.html_escape()
+    snippet = Snippets.create(snippet_text)
 
-    redirect(conn, to: "/snippets/#{1}")
+    redirect(conn, to: "/snippets/#{snippet.id}")
   end
 
   match _ do

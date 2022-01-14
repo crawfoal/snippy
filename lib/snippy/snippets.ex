@@ -1,5 +1,12 @@
 defmodule Snippy.Snippets do
+  alias Snippy.{ Snippet, Store }
+
   def by_id(id) do
-    %{id: 1, text: "This is a fun exercise!"}
+    Store.get(id)
+  end
+
+  def create(snippet_text) do
+    %Snippet{text: snippet_text}
+    |> Store.put()
   end
 end
