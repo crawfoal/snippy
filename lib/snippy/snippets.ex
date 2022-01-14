@@ -9,4 +9,8 @@ defmodule Snippy.Snippets do
     %Snippet{text: snippet_text}
     |> Store.put()
   end
+
+  def update(id, snippet_text) do
+    Store.update(id, snippet_text)
+  end
 end

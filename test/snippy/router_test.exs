@@ -3,7 +3,7 @@ defmodule Snippy.RouterTest do
   use Plug.Test
   import PhoenixPlugTestPatch
 
-  alias Snippy.Router
+  alias Snippy.{ Router, Snippets }
 
   @opts Router.init([])
 
@@ -27,7 +27,7 @@ defmodule Snippy.RouterTest do
     assert String.match?(conn.resp_body, ~r/Create A Snippet/)
   end
 
-  test "POST /snippets accepts form encoded data and redirects to snippet" do
+  test "POST /snippets accepts form encoded data and redirects to snippet show page" do
     conn =
       conn(:post, "/snippets", "snippet=This+is+a+fun+exercise%21")
       |> put_req_header("content-type", "application/x-www-form-urlencoded")
@@ -73,5 +73,37 @@ defmodule Snippy.RouterTest do
 
     assert conn.state == :sent
     assert conn.status == 404
+  end
+
+  test "POST /snippets/:id updates snippet and redirects to snippet show page" do
+    snippet_text = "I will be updated"
+    snippet = Snippets.create(snippet_text)
+    conn =
+      conn(:post, "/snippets/#{snippet.id}", "snippet=I+have+been+updated")
+      |> put_req_header("content-type", "application/x-www-form-urlencoded")
+
+    conn = Router.call(conn, @opts)
+
+    redirect_path = redirected_to(conn)
+    assert String.match?(redirect_path, ~r/\/snippets\/\d+/)
+
+    conn = conn(:get, redirect_path)
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert String.match?(conn.resp_body, ~r/I have been updated/)
+  end
+
+  test "GET /snippets/:id/edit shows edit form" do
+    snippet_text = "I will be updated"
+    snippet = Snippets.create(snippet_text)
+    conn = conn(:get, "/snippets/#{snippet.id}/edit")
+
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert String.match?(conn.resp_body, ~r/Edit Your Snippet/)
   end
 end

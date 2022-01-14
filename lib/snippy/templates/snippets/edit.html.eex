@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Snippy</title>
+  </head>
+  <body>
+    <form action="/snippets/<%= snippet.id %>" method="POST" accept-charset="utf-8">
+      <div>
+        <label for="snippet">Edit Your Snippet</label>
+        <br>
+        <textarea name="snippet" id="snippet"></textarea>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

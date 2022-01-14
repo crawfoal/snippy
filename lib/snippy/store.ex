@@ -23,4 +23,19 @@ defmodule Snippy.Store do
   def get(id) do
     Agent.get(__MODULE__, fn state -> Map.get(state.snippets, id) end)
   end
+
+  def update(id, new_text) do
+    Agent.get_and_update(__MODULE__, fn %{ snippets: snippets } = orig_state ->
+      case snippets[id] do
+        %Snippet{} = orig_snippet ->
+          updated_snippet = %{ orig_snippet | text: new_text }
+          new_state = %{ orig_state | snippets: Map.put(snippets, id, updated_snippet) }
+
+          { updated_snippet, new_state }
+
+        nil ->
+          { nil, orig_state }
+      end
+    end)
+  end
 end

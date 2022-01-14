@@ -10,6 +10,9 @@
       <%= snippet.text %>
       <br>
       <br>
+      <a href="/snippets/<%= snippet.id %>/edit">Edit This Snippet</a>
+      <br>
+      <br>
       This snippet can be accessed at:
       <br>
       <%= "#{Snippy.host()}/snippets/#{snippet.id}" %>

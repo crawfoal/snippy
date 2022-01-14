@@ -18,7 +18,32 @@ defmodule Snippy.Router do
       {id, _rest} <- Integer.parse(id),
       %Snippet{} = snippet <- Snippets.by_id(id)
     ) do
-      render(conn, "snippets/show.html.eex", [snippet: snippet])
+      render(conn, "snippets/show.html", [snippet: snippet])
+    else
+      _error_or_nil ->
+        send_resp(conn, 404, "not found")
+    end
+  end
+
+  get "/snippets/:id/edit" do
+    with(
+      {id, _rest} <- Integer.parse(id),
+      %Snippet{} = snippet <- Snippets.by_id(id)
+    ) do
+      render(conn, "snippets/edit.html", [snippet: snippet])
+    else
+      _error_or_nil ->
+        send_resp(conn, 404, "not found")
+    end
+  end
+
+  post "/snippets/:id" do
+    new_snippet_text = conn.body_params["snippet"] |> Plug.HTML.html_escape()
+    with(
+      {id, _rest} <- Integer.parse(id),
+      %Snippet{} = _updated_snippet <- Snippets.update(id, new_snippet_text)
+    ) do
+      redirect(conn, to: "/snippets/#{id}")
     else
       _error_or_nil ->
         send_resp(conn, 404, "not found")
