@@ -7,5 +7,5 @@ PragProg.
 ## Development & Testing
 
 - Run the application with `mix run --no-halt`, or within an iex session
-  `iex -S mix`. You can visit the application at http://localhost:4000/.
+  `iex -S mix`. You can visit the application at http://localhost:4001/.
 - Run tests via `mix test`.

@@ -8,8 +8,7 @@ defmodule Snippy.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Snippy.Worker.start_link(arg)
-      # {Snippy.Worker, arg}
+      {Plug.Cowboy, scheme: :http, plug: Snippy.Router, options: [port: 4001]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
