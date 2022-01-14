@@ -1,5 +1,5 @@
 defmodule Snippy.RouterTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   use Plug.Test
   import PhoenixPlugTestPatch
 
@@ -106,5 +106,23 @@ defmodule Snippy.RouterTest do
     assert conn.status == 200
     assert String.match?(conn.resp_body, ~r/Edit Your Snippet/)
     assert String.match?(conn.resp_body, ~r/#{snippet.text}/)
+  end
+
+  test "GET /snippets/:id/history shows all versions" do
+    text_v1 = "Charlotte, oh wise one, save my life!"
+    %{id: id, created_at: created_at_v1} = Snippets.create(text_v1)
+    text_v2 = "Charlotte is brilliant!"
+    %{created_at: created_at_v2} = Snippets.update(id, text_v2)
+    text_v3 = "Bye Charlotte"
+    %{created_at: created_at_v3} = Snippets.update(id, text_v3)
+    conn = conn(:get, "/snippets/#{id}/history")
+
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert String.match?(conn.resp_body, ~r/#{created_at_v1}\: #{text_v1}/)
+    assert String.match?(conn.resp_body, ~r/#{created_at_v2}\: #{text_v2}/)
+    assert String.match?(conn.resp_body, ~r/#{created_at_v3}\: #{text_v3}/)
   end
 end

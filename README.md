@@ -55,3 +55,6 @@ PragProg.
   - More complex, but more user friendly, would be to lock individual rows. And
     show live updates! That would be cool, but also help the users be more
     likely to be editing the most up-to-date version.
+- I had to make my test synchronous for them to pass :(
+- Figure out a way to remove the 1 second sleep from that one test.
+- Format created at timestamps when displaying history

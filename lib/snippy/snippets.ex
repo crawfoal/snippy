@@ -13,4 +13,8 @@ defmodule Snippy.Snippets do
   def update(id, snippet_text) do
     Store.update(id, snippet_text)
   end
+
+  def history(id) do
+    Store.get_snippet_versions(id)
+  end
 end

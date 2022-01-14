@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Snippy</title>
+  </head>
+  <body>
+    Snippet History:
+    <%= for snippet <- snippet_versions do %>
+      <p><%= snippet.created_at %>: <%= snippet.text %></p>
+    <% end %>
+  </body>
+</html>

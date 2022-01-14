@@ -37,6 +37,18 @@ defmodule Snippy.Router do
     end
   end
 
+  get "/snippets/:id/history" do
+    with(
+      {id, _rest} <- Integer.parse(id),
+      snippet_versions when is_list(snippet_versions) <- Snippets.history(id)
+    ) do
+      render(conn, "snippets/history.html", [snippet_versions: snippet_versions])
+    else
+      _error_or_nil ->
+        send_resp(conn, 404, "not found")
+    end
+  end
+
   post "/snippets/:id" do
     new_snippet_text = conn.body_params["snippet"] |> Plug.HTML.html_escape()
     with(
