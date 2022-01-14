@@ -1,3 +1,3 @@
 defmodule Snippy.Snippet do
-  defstruct [:id, :text]
+  defstruct [:id, :text, :created_at]
 end

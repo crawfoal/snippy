@@ -11,7 +11,8 @@ defmodule Snippy.Store do
 
   def put(%Snippet{} = snippet) do
     Agent.get_and_update(__MODULE__, fn orig_state ->
-      snippet_with_id = %{ snippet | id: orig_state.size }
+      created_at = DateTime.utc_now() |> DateTime.to_unix()
+      snippet_with_id = %{ snippet | id: orig_state.size, created_at: created_at }
       new_state = %{ orig_state |
         size: orig_state.size + 1,
         snippets: Map.put(orig_state.snippets, orig_state.size, snippet_with_id)

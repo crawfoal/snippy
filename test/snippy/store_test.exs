@@ -8,7 +8,8 @@ defmodule Snippy.StoreTest do
       snippet_text = "Wilbur and Charlotte are best friends."
       snippet = %Snippet{text: snippet_text}
 
-      assert %{id: id, text: ^snippet_text} = Store.put(snippet)
+      assert %{id: id, text: ^snippet_text, created_at: created_at} = Store.put(snippet)
+      assert is_integer(created_at)
       assert %{text: ^snippet_text} = Store.get(id)
     end
   end
