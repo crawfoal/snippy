@@ -3,6 +3,7 @@ defmodule Snippy.Router do
 
   plug :match
   plug Plug.Parsers, parsers: [:urlencoded], pass: ["text/*"]
+  plug Snippy.Plugs.IdDecoder
   plug :dispatch
 
   alias Snippy.{ Snippet, Snippets }
@@ -14,50 +15,38 @@ defmodule Snippy.Router do
   end
 
   get "/snippets/:id" do
-    with(
-      {id, _rest} <- Integer.parse(id),
-      %Snippet{} = snippet <- Snippets.by_id(id)
-    ) do
-      render(conn, "snippets/show.html", [snippet: snippet])
-    else
-      _error_or_nil ->
+    case Snippets.by_id(conn.params["id"]) do
+      %Snippet{} = snippet ->
+        render(conn, "snippets/show.html", [snippet: snippet])
+      _ ->
         send_resp(conn, 404, "not found")
     end
   end
 
   get "/snippets/:id/edit" do
-    with(
-      {id, _rest} <- Integer.parse(id),
-      %Snippet{} = snippet <- Snippets.by_id(id)
-    ) do
-      render(conn, "snippets/edit.html", [snippet: snippet])
-    else
-      _error_or_nil ->
+    case Snippets.by_id(conn.params["id"]) do
+      %Snippet{} = snippet ->
+        render(conn, "snippets/edit.html", [snippet: snippet])
+      _ ->
         send_resp(conn, 404, "not found")
     end
   end
 
   get "/snippets/:id/history" do
-    with(
-      {id, _rest} <- Integer.parse(id),
-      snippet_versions when is_list(snippet_versions) <- Snippets.history(id)
-    ) do
-      render(conn, "snippets/history.html", [snippet_versions: snippet_versions])
-    else
-      _error_or_nil ->
+    case Snippets.history(conn.params["id"]) do
+      snippet_versions when is_list(snippet_versions) ->
+        render(conn, "snippets/history.html", [snippet_versions: snippet_versions])
+      _ ->
         send_resp(conn, 404, "not found")
     end
   end
 
   post "/snippets/:id" do
     new_snippet_text = conn.body_params["snippet"] |> Plug.HTML.html_escape()
-    with(
-      {id, _rest} <- Integer.parse(id),
-      %Snippet{} = _updated_snippet <- Snippets.update(id, new_snippet_text)
-    ) do
-      redirect(conn, to: "/snippets/#{id}")
-    else
-      _error_or_nil ->
+    case Snippets.update(conn.params["id"], new_snippet_text) do
+      %Snippet{} ->
+        redirect(conn, to: "/snippets/#{conn.params["id"]}")
+      _ ->
         send_resp(conn, 404, "not found")
     end
   end
