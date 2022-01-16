@@ -19,8 +19,8 @@ PragProg.
   - I questioned where to escape the string - before saving it or before
     presenting it. I chose before saving it because that felt more reliable.
 - I learned how Phoenix's `redirect` helper works as well as the `redirected_to`
- test helper. But looking back on it, redirecting maybe wasn't what I should
- have spent my time on in this exercise.
+  test helper. But looking back on it, redirecting maybe wasn't what I should
+  have spent my time on in this exercise.
 - I read through the Agent docs in more detail and realized that last week I
   probably should have used `get_and_update` instead of sending and receiving
   messages between the agent and client processes.
@@ -31,15 +31,10 @@ PragProg.
 - Another thing that is bugging me is the duplication in parameter parsing. To
   address this, I'd review what Johnny did for this in recent work, as well as
   any other community patterns.
-- I'd also refactor `Store` to have the server helper functions broken out. This
-  would reduce some duplication and make coming updates easier.
 - I'm not sure I like the interface that `Snippets` has. I'd reconsider that
   after implenting the versioning aspect of the problem because I'd have more
   information at that point about what a better interface might look like.
-- I'm currently just at the beginning of implenting support for multiple
-  versions. I've started by adding a created at timestamp to the `Snippet`
-  struct. The plan is to the store an array of `Snippets`, adding new versions
-  to the top of the list. I chose to store the `created_at` timestamp in unix
+- I chose to store the `created_at` timestamp in unix
   format because I had a feeling I might want to use it sort of like an id
   and/or for comparision of versions, but I'm not sure exactly how that will
   play out.
