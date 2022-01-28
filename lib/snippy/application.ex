@@ -7,6 +7,8 @@ defmodule Snippy.Application do
 
   @impl true
   def start(_type, _args) do
+    :opentelemetry_cowboy.setup()
+
     children = [
       {Plug.Cowboy, scheme: :http, plug: Snippy.Router, options: [port: 4001]},
       Snippy.Store
